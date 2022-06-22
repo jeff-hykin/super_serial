@@ -1,9 +1,8 @@
 from collections import OrderedDict
 
-super_serial = Object()
 
-super_serial.override_table = OrderedDict()
-super_serial.fallback_table = OrderedDict()
+override_table = OrderedDict()
+fallback_table = OrderedDict()
 
 import ez_yaml
 from dill import dumps, loads
@@ -28,11 +27,11 @@ def serialize(value, **options):
     # 
     # then check the override_table
     # 
-    for each_checker in reversed(super_serial.override_table.keys()):
+    for each_checker in reversed(override_table.keys()):
         type_matches = isinstance(each_checker, type) and isinstance(value, each_checker)
         callable_check_matches = not isinstance(each_checker, type) and callable(each_checker) and each_checker(value)
         if type_matches or callable_check_matches:
-            custom_converter_function = super_serial.override_table[each_checker]
+            custom_converter_function = override_table[each_checker]
             return recursion(custom_converter_function(value))
     
     # 
@@ -45,11 +44,11 @@ def serialize(value, **options):
     # 
     # then check the fallback_table
     # 
-    for each_checker in reversed(super_serial.fallback_table.keys()):
+    for each_checker in reversed(fallback_table.keys()):
         type_matches = isinstance(each_checker, type) and isinstance(value, each_checker)
         callable_check_matches = not isinstance(each_checker, type) and callable(each_checker) and each_checker(value)
         if type_matches or callable_check_matches:
-            custom_converter_function = super_serial.fallback_table[each_checker]
+            custom_converter_function = fallback_table[each_checker]
             return recursion( custom_converter_function(value) )
     
     # 
