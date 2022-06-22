@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "your_package_name"
+name = "super_serial"
 version = "0.0.1"
-description = "YOUR_DESCRIPTION"
+description = ""
 authors=[]
 
 [tool.extra]
