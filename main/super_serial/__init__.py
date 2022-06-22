@@ -10,7 +10,7 @@ from dill import dumps, loads
 ez_yaml.yaml.version = None
 
 none_type = type(None)
-def serialize(value):
+def serialize(value, **options):
     recursion = lambda value: serialize(value, **options)
     # 
     # builtins
