@@ -6,11 +6,49 @@ Under construction
 
 # How do I use this?
 
-`pip install your_package_name`
+`pip install super-serial`
 
 
 ```python
-from your_package_name import something
+from super_serial import serialize, deserialize, auto_serial
 
-# example of how to use your package here
+@auto_serial(included_attributes=["name"], excluded_attributes=["a_func"])
+class Person:
+    __deserialize_id__ = "0.5334486126134206-Thing"
+    
+    def __init__(self, name):
+        self.name = name
+        self.a_func = lambda : print("lambdas like me are difficult to impossible to serialize")
+
+
+# 
+# save
+# 
+person = Person("hi")
+person.save("./some/path.person.yaml")
+
+# 
+# load
+# 
+person = Person.load("./some/path.person.yaml")
+
+# 
+# serialize
+# 
+person_string = serialize(person) # returns a string
+
+# 
+# deserialize
+# 
+person = deserialize(person_string) # returns a person object
+
+# 
+# load + reconnect 
+# 
+person = Person.load(
+    "./some/path.person.yaml",
+    # manually reconnect stuff that simply cant be serialized
+    a_func= lambda : print("lambdas like me are difficult to impossible to serialize")
+)
+
 ``` -->
